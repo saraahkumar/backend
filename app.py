@@ -4,13 +4,14 @@ import pandas as pd
 from datetime import datetime
 import yagmail
 import os
+import traceback
 
 app = Flask(__name__)
 
 # Allow cross-origin requests from your deployed Vercel frontend
 CORS(app, resources={r"/*": {"origins": "https://frontend-661k.vercel.app"}}, supports_credentials=True)
 
-# Replace with your actual credentials
+# Use environment variables for security
 SENDER_EMAIL = os.environ.get("EMAIL_USER")
 APP_PASSWORD = os.environ.get("EMAIL_APP_PASSWORD")
 
@@ -29,17 +30,24 @@ def submit_data():
 
     # Send email with attachment
     try:
-        print(f"📤 Sending email to: {recipient_email}")
+        print(f"📤 Attempting to send email to: {recipient_email}")
+        print(f"Using sender: {SENDER_EMAIL}")
+        print(f"App password is None: {APP_PASSWORD is None}")
+
         yag = yagmail.SMTP(SENDER_EMAIL, APP_PASSWORD)
         subject = f"Water Quality Data - {location}"
         body = f"Attached is the Excel file for your sampling location: {location}."
         yag.send(to=recipient_email, subject=subject, contents=body, attachments=filepath)
+
         print("✅ Email sent successfully!")
         return jsonify({"message": "Excel file created and emailed successfully!"})
+
     except Exception as e:
         print(f"❌ Email send failed: {e}")
+        traceback.print_exc()
         return jsonify({"message": f"Failed to send email: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=10000)
+
 
