@@ -12,7 +12,7 @@ CORS(app, resources={r"/*": {"origins": "https://frontend-661k.vercel.app"}}, su
 
 # Replace with your actual credentials
 SENDER_EMAIL = "sarahssamplingsetup@gmail.com"
-APP_PASSWORD = "yjokqwkbnrdmoegr"
+APP_PASSWORD = "isbmdzlumghhpgig"
 
 @app.route('/submit', methods=['POST'])
 def submit_data():
