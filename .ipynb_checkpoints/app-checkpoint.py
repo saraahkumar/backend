@@ -11,8 +11,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://frontend-661k.vercel.app"}}, supports_credentials=True)
 
 # Replace with your actual credentials
-SENDER_EMAIL = "sarahssamplingsetup@gmail.com"
-APP_PASSWORD = "xttsovfazdfdpkcp"
+SENDER_EMAIL = os.environ.get("EMAIL_USER")
+APP_PASSWORD = os.environ.get("EMAIL_APP_PASSWORD")
 
 @app.route('/submit', methods=['POST'])
 def submit_data():
